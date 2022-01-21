@@ -118,10 +118,9 @@ class HentaiChan:
         :return:
         """
 
-        telegraph = Telegraph()
-        await telegraph.create_account('HentaiChan')
+        await Telegraph().create_account('HentaiChan')
+        html = ''
         for i in manga:
-            html = ''
             for j in await i.content.images:
                 html += f"<img src='{j}'/>"
         page = await telegraph.create_page(i.title, html)
