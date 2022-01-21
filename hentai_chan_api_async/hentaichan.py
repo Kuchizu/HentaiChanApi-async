@@ -2,9 +2,11 @@ import logging
 import re
 
 import aiohttp
+import asyncio
 from .data import Manga
 from .content_parser import MangaContent
 from bs4 import BeautifulSoup
+from aiograph import Telegraph
 
 
 class HentaiChan:
@@ -107,6 +109,23 @@ class HentaiChan:
         m.content = await self.__get_manga_content(manga_id)
 
         return m
+
+    async def get_telegraph(self, manga: Manga) -> str:
+        """
+        Метод возвращает ссылку на телегаф
+
+        :param manga:
+        :return:
+        """
+
+        telegraph = Telegraph()
+        await telegraph.create_account('HentaiChan')
+        for i in manga:
+            html = ''
+            for j in await i.content.images:
+                html += f"<img src='{j}'/>"
+        page = await telegraph.create_page(i.title, html)
+        return page.url
 
     async def __get_search_content(self, url: str, offset: int, count: int) -> list[Manga]:
         """
