@@ -120,9 +120,8 @@ class HentaiChan:
 
         await Telegraph().create_account('HentaiChan')
         html = ''
-        for i in manga:
-            for j in await i.content.images:
-                html += f"<img src='{j}'/>"
+        for i in await manga.content.images:
+            html += f"<img src='{i}'/>"
         page = await telegraph.create_page(i.title, html)
         return page.url
 
